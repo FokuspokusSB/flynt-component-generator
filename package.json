@@ -3,6 +3,10 @@
   "displayName": "flynt-component-generator",
   "description": "generate flynt components",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FokuspokusSB/flynt-component-generator"
+  },
   "engines": {
     "vscode": "^1.88.1"
   },
@@ -29,6 +33,7 @@
     }
   },
   "scripts": {
+    "pack": "vsce package",
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",
