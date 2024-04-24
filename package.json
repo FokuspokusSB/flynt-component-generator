@@ -1,8 +1,13 @@
 {
   "name": "flynt-component-generator",
   "displayName": "flynt-component-generator",
-  "description": "generate flynt components",
-  "version": "0.0.1",
+  "author": {
+    "name": "Sören Balke",
+    "email": "sb@fokuspokus-media.de",
+    "url": "https://fokuspokus-media.de"
+  },
+  "description": "generates and fills flynt components",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/FokuspokusSB/flynt-component-generator"
@@ -20,6 +25,10 @@
       {
         "command": "flynt-component-generator.generate",
         "title": "Generate Flynt Component"
+      },
+      {
+        "command": "flynt-component-generator.addFiles",
+        "title": "Add Flynt Component Files"
       }
     ],
     "menus": {
@@ -28,6 +37,11 @@
           "command": "flynt-component-generator.generate",
           "group": "flynt-component-generator",
           "when": "explorerResourceIsFolder && resourceFilename =~ /Component/"
+        },
+        {
+          "command": "flynt-component-generator.addFiles",
+          "group": "flynt-component-generator",
+          "when": "explorerResourceIsFolder && resourcePath =~ /Component/"
         }
       ]
     }

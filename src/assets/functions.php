@@ -15,6 +15,11 @@ function getACFLayout()
     'name' => '<component_name>',
     'label' => '<component_name>',
     'sub_fields' => [
+      [
+        'label' => 'ID',
+        'name' => 'id',
+        'type' => 'text'
+      ],
     ]
   ];
 }

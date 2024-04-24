@@ -1,7 +1,13 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { resolve } from "path";
-import { writeFileSync, readFileSync, mkdirSync } from "fs";
+import {
+  writeFileSync,
+  readFileSync,
+  mkdirSync,
+  existsSync,
+  readdirSync,
+} from "fs";
 
 interface SupportedFiles extends vscode.QuickPickItem {
   value: string;
@@ -39,11 +45,17 @@ const SUPPORTED_FILES_OPTIONS: SupportedFiles[] = [
   },
 ];
 
-function createComponent(componentInfos: ComponentData, componentDir: string) {
+function createComponentAndAddFile(
+  componentInfos: ComponentData,
+  componentDir: string
+) {
   const componentFolder = resolve(componentDir, componentInfos.name);
-  mkdirSync(componentFolder, {
-    recursive: true,
-  });
+  if (!existsSync(componentFolder)) {
+    mkdirSync(componentFolder, {
+      recursive: true,
+    });
+  }
+
   componentInfos.supportedFiles.forEach((v) => {
     const file = v.value;
     try {
@@ -108,12 +120,11 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         componentSupportFiles.onDidAccept((e) => {
-          console.log(componentInfos.supportedFiles);
           if (componentInfos.supportedFiles.length === 0) {
             return;
           }
           componentSupportFiles.hide();
-          createComponent(componentInfos, folder.path);
+          createComponentAndAddFile(componentInfos, folder.path);
         });
         componentSupportFiles.show();
       });
@@ -124,8 +135,47 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage("Hello World");
     }
   );
-
   context.subscriptions.push(disposable);
+
+  let disposable2 = vscode.commands.registerCommand(
+    "flynt-component-generator.addFiles",
+    (folder) => {
+      const includedFiles = readdirSync(folder.path);
+      const folderArray = folder.path.split("/");
+
+      let componentInfos: ComponentData = {
+        name: "",
+        supportedFiles: [],
+      };
+      componentInfos.name = folderArray.pop();
+      const folderPathWithoutComponent = folderArray.join("/");
+
+      const componentSupportFiles =
+        vscode.window.createQuickPick<SupportedFiles>();
+      componentSupportFiles.placeholder = "supported files";
+      componentSupportFiles.canSelectMany = true;
+      const availableFiles = SUPPORTED_FILES_OPTIONS.filter(
+        (v) => !includedFiles.includes(v.value)
+      );
+      componentSupportFiles.items = availableFiles;
+      componentSupportFiles.selectedItems = availableFiles.filter(
+        (v) => v.preSelected
+      );
+      componentSupportFiles.onDidChangeSelection((e) => {
+        componentInfos.supportedFiles = e as SupportedFiles[];
+      });
+      componentSupportFiles.onDidAccept((e) => {
+        if (componentInfos.supportedFiles.length === 0) {
+          return;
+        }
+        componentSupportFiles.hide();
+        createComponentAndAddFile(componentInfos, folderPathWithoutComponent);
+      });
+      componentSupportFiles.show();
+    }
+  );
+
+  context.subscriptions.push(disposable2);
 }
 
 // This method is called when your extension is deactivated
