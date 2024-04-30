@@ -40,8 +40,12 @@ const SUPPORTED_FILES_OPTIONS: SupportedFiles[] = [
     value: "script.js",
   },
   {
-    label: "admin",
+    label: "admin.js",
     value: "admin.js",
+  },
+  {
+    label: "_admin.scss",
+    value: "_admin.scss",
   },
 ];
 
