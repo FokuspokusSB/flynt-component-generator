@@ -8,6 +8,7 @@ import {
   existsSync,
   readdirSync,
 } from "fs";
+import { collectScreenshots, deployScreenshots } from "./lib/screenshots";
 
 interface SupportedFiles extends vscode.QuickPickItem {
   value: string;
@@ -87,14 +88,7 @@ function createComponentAndAddFile(
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log(
-    'Congratulations, your extension "flynt-component-generator" is now active!'
-  );
-
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand(
+  let disposableGenerateComponent = vscode.commands.registerCommand(
     "flynt-component-generator.generate",
     (folder) => {
       let componentInfos: ComponentData = {
@@ -139,9 +133,9 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage("Hello World");
     }
   );
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(disposableGenerateComponent);
 
-  let disposable2 = vscode.commands.registerCommand(
+  let disposableAddFiles = vscode.commands.registerCommand(
     "flynt-component-generator.addFiles",
     (folder) => {
       const includedFiles = readdirSync(folder.path);
@@ -178,8 +172,25 @@ export function activate(context: vscode.ExtensionContext) {
       componentSupportFiles.show();
     }
   );
+  context.subscriptions.push(disposableAddFiles);
 
-  context.subscriptions.push(disposable2);
+  let disposableCollectScreenshots = vscode.commands.registerCommand(
+    "flynt-component-generator.collectScreenshots",
+    (folder) => {
+      const componentsDir = folder.path;
+      collectScreenshots(componentsDir);
+    }
+  );
+  context.subscriptions.push(disposableCollectScreenshots);
+
+  let disposableDeployScreenshots = vscode.commands.registerCommand(
+    "flynt-component-generator.deployScreenshots",
+    (folder) => {
+      const componentsDir = folder.path;
+      deployScreenshots(componentsDir);
+    }
+  );
+  context.subscriptions.push(disposableDeployScreenshots);
 }
 
 // This method is called when your extension is deactivated

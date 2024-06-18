@@ -6,8 +6,8 @@
     "email": "sb@fokuspokus-media.de",
     "url": "https://fokuspokus-media.de"
   },
-  "description": "generates and fills flynt components",
-  "version": "0.0.3",
+  "description": "generates and fills flynt components + other utilities",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/FokuspokusSB/flynt-component-generator"
@@ -29,6 +29,14 @@
       {
         "command": "flynt-component-generator.addFiles",
         "title": "Add Flynt Component Files"
+      },
+      {
+        "command": "flynt-component-generator.collectScreenshots",
+        "title": "Collect all Screenshots from Components"
+      },
+      {
+        "command": "flynt-component-generator.deployScreenshots",
+        "title": "Deploy all Screenshots from Components"
       }
     ],
     "menus": {
@@ -42,6 +50,16 @@
           "command": "flynt-component-generator.addFiles",
           "group": "flynt-component-generator",
           "when": "explorerResourceIsFolder && resourcePath =~ /Component/"
+        },
+        {
+          "command": "flynt-component-generator.collectScreenshots",
+          "group": "flynt-component-generator",
+          "when": "explorerResourceIsFolder && resourceFilename =~ /Component/"
+        },
+        {
+          "command": "flynt-component-generator.deployScreenshots",
+          "group": "flynt-component-generator",
+          "when": "explorerResourceIsFolder && resourceFilename =~ /Component/"
         }
       ]
     }
