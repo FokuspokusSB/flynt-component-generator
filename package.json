@@ -54,12 +54,12 @@
         {
           "command": "flynt-component-generator.collectScreenshots",
           "group": "flynt-component-generator",
-          "when": "explorerResourceIsFolder && resourceFilename =~ /Component/"
+          "when": "explorerResourceIsFolder"
         },
         {
           "command": "flynt-component-generator.deployScreenshots",
           "group": "flynt-component-generator",
-          "when": "explorerResourceIsFolder && resourceFilename =~ /Component/"
+          "when": "explorerResourceIsFolder"
         }
       ]
     }

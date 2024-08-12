@@ -176,18 +176,20 @@ export function activate(context: vscode.ExtensionContext) {
 
   let disposableCollectScreenshots = vscode.commands.registerCommand(
     "flynt-component-generator.collectScreenshots",
-    (folder) => {
+    async (folder) => {
       const componentsDir = folder.path;
       collectScreenshots(componentsDir);
+      await vscode.window.showInformationMessage("screenshots collected", "Ok");
     }
   );
   context.subscriptions.push(disposableCollectScreenshots);
 
   let disposableDeployScreenshots = vscode.commands.registerCommand(
     "flynt-component-generator.deployScreenshots",
-    (folder) => {
+    async (folder) => {
       const componentsDir = folder.path;
       deployScreenshots(componentsDir);
+      await vscode.window.showInformationMessage("screenshots deployed", "Ok");
     }
   );
   context.subscriptions.push(disposableDeployScreenshots);
